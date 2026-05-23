@@ -56,6 +56,12 @@
     @apply  !mb-0 !leading-tight;
 }
 
+input[data-flux-control],
+textarea[data-flux-control],
+select[data-flux-control] {
+    @apply bg-white/50;
+}
+
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
@@ -64,7 +70,7 @@ select:focus[data-flux-control] {
 
 ui-checkbox:not([data-checked]):not([data-indeterminate]) [data-flux-checkbox-indicator],
 ui-radio:not([data-checked]) [data-flux-radio-indicator] {
-    background-color: transparent !important;
+    @apply bg-white/50!;
 }
 
 /* \[:where(&)\]:size-4 {
