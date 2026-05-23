@@ -45,6 +45,11 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    public function gravatarUrl(): string
+    {
+        return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?d=mp';
+    }
+
     /**
      * Get the tasks for the user.
      */

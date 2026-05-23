@@ -18,10 +18,10 @@ class Task extends Model
     use HasFactory;
 
     protected $casts = [
-        'due_date'          => 'date',
+        'due_date' => 'date',
         'original_due_date' => 'date',
-        'completed_date'    => 'date',
-        'countdown'         => 'boolean',
+        'completed_date' => 'date',
+        'countdown' => 'boolean',
     ];
 
     public function user(): BelongsTo
