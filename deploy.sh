@@ -3,6 +3,7 @@ set -e
 
 git fetch origin
 git reset --hard origin/main
+composer install --no-dev --optimize-autoloader
 npm run build
 php artisan migrate --force
 php artisan optimize
