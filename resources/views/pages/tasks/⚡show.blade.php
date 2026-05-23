@@ -17,6 +17,13 @@ new class extends Component {
         $this->task->revert();
         $this->task->refresh();
     }
+
+    public function destroy()
+    {
+        $this->task->delete();
+
+        return $this->redirectRoute('tasks', navigate: true);
+    }
 }; ?>
 
 @php
@@ -79,7 +86,15 @@ new class extends Component {
     </div>
 
     <div class="flex justify-between pt-2">
-        <flux:button :href="route('tasks')" wire:navigate>Back</flux:button>
-        <flux:button :href="route('tasks.edit', $task)" wire:navigate variant="primary">Edit</flux:button>
+        <flux:button :href="route('tasks')" wire:navigate icon="arrow-left" />
+        <div class="flex gap-2">
+            <flux:button :href="route('tasks.edit', $task)" wire:navigate variant="primary" icon="pencil" />
+            <flux:button
+                wire:click="destroy"
+                wire:confirm="Delete this task?"
+                variant="danger"
+                icon="trash"
+            />
+        </div>
     </div>
 </div>
