@@ -31,7 +31,7 @@
                 </flux:text>
                 <div class="flex items-center gap-4">
                     <flux:text class="text-zinc-400 dark:text-zinc-500">
-                        <a href="{{ route('tasks.show', $task) }}" wire:navigate class="no-underline text-inherit">{{ $formatDate($task->due_date) }}</a>
+                        <a href="{{ route('tasks.show', $task) }}" wire:navigate class="no-underline text-inherit">{{ $task->due_date->format('j F') }}{{ $task->due_date->year !== now()->year ? ' ' . $task->due_date->year : '' }}</a>
                     </flux:text>
                     <flux:text class="text-zinc-900 dark:text-zinc-400">
                         <a href="{{ route('tasks.show', $task) }}" wire:navigate class="no-underline text-inherit">{{ $task->countdownPhrase() }}</a>
