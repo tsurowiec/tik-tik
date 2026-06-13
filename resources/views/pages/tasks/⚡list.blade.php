@@ -102,10 +102,6 @@ new class extends Component {
 }; ?>
 
 <div class="space-y-4">
-    <div class="flex justify-end">
-        <flux:button :href="route('tasks.create')" wire:navigate variant="primary" icon="plus" class="bg-accent! text-accent-foreground!">New</flux:button>
-    </div>
-
     <x-tabs :tabs="$tabs" :active="$activeTab"/>
 
     @if($activeTab === 'next10days')

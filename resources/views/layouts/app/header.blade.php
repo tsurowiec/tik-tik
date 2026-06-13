@@ -10,6 +10,16 @@
 
             <flux:spacer />
 
+            <flux:button
+                :href="route('tasks.create')"
+                wire:navigate
+                variant="primary"
+                icon="plus"
+                square
+                class="me-3 rounded-full! bg-accent! text-accent-foreground!"
+                aria-label="{{ __('New task') }}"
+            />
+
             <x-desktop-user-menu />
         </flux:header>
 
