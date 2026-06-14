@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\TaskFactory;
 use DateInterval;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,22 @@ class Task extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Insert ?ui=2 after /u/0/ in Gmail links so they open in the basic HTML view.
+     */
+    protected function link(): Attribute
+    {
+        return Attribute::make(
+            set: fn (?string $value): ?string => $value === null
+                ? null
+                : preg_replace(
+                    '~^(https://mail\.google\.com/mail/u/\d+/)(?!\?ui=2)(#)~',
+                    '$1?ui=2$2',
+                    $value
+                ),
+        );
     }
 
     public function prev(): BelongsTo
