@@ -39,14 +39,13 @@ new class extends Component {
             ->get();
 
         $next10DaysGrouped = $next10DaysItems->groupBy(function ($task) use ($today) {
-            if ($task->due_date->isSameDay($today)) return 'Today';
-            if ($task->due_date->isSameDay($today->copy()->addDay())) return 'Tomorrow';
-            if ($task->due_date->isSameDay($today->copy()->addDays(2))) return $task->due_date->format('l');
-            if ($task->due_date->isSameDay($today->copy()->addDays(3))) return $task->due_date->format('l');
-            if ($task->due_date->isSameDay($today->copy()->addDays(4))) return $task->due_date->format('l');
-            if ($task->due_date->isSameDay($today->copy()->addDays(5))) return $task->due_date->format('l');
-            if ($task->due_date->isSameDay($today->copy()->addDays(6))) return $task->due_date->format('l');
-            return $task->due_date->format('j M');
+            $date = $task->due_date->format('j M');
+
+            if ($task->due_date->isSameDay($today)) return "Today, {$date}";
+            if ($task->due_date->isSameDay($today->copy()->addDay())) return "Tomorrow, {$date}";
+            if ($task->due_date->lte($today->copy()->addDays(6))) return $task->due_date->format('l').", {$date}";
+
+            return $date;
         });
 
         $overdueTasks = $user->tasks()
