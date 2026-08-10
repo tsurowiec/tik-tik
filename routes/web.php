@@ -1,8 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('tasks');
+    }
+
+    return view('welcome');
+})->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('/tasks', 'pages::tasks.list')->name('tasks');
     Route::livewire('/tasks/create', 'pages::tasks.create')->name('tasks.create');
