@@ -10,6 +10,7 @@ new class extends Component {
     public ?string $description = null;
     public ?string $link = null;
     public ?string $due_date = null;
+    public ?string $original_due_date = null;
     public ?string $icon = null;
 
     public function mount(Task $task): void
@@ -19,22 +20,25 @@ new class extends Component {
         $this->description = $task->description;
         $this->link = $task->link;
         $this->due_date = $task->due_date?->toDateString();
+        $this->original_due_date = $task->original_due_date?->toDateString();
         $this->icon = $task->icon;
     }
 
     public function save()
     {
         $data = $this->validate([
-            'title'       => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'link'        => ['nullable', 'url', 'max:2048'],
-            'due_date'    => ['nullable', 'date'],
-            'icon'        => ['nullable', 'string', 'in:'.implode(',', Task::icons())],
+            'title'             => ['required', 'string', 'max:255'],
+            'description'       => ['nullable', 'string'],
+            'link'              => ['nullable', 'url', 'max:2048'],
+            'due_date'          => ['nullable', 'date'],
+            'original_due_date' => ['nullable', 'date'],
+            'icon'              => ['nullable', 'string', 'in:'.implode(',', Task::icons())],
         ]);
 
-        $this->task->fill(\Illuminate\Support\Arr::except($data, ['icon']));
+        $this->task->fill(\Illuminate\Support\Arr::except($data, ['icon', 'original_due_date']));
         if ($this->task->countdown) {
             $this->task->icon = $this->icon;
+            $this->task->original_due_date = $data['original_due_date'];
         }
         $this->task->save();
 
@@ -64,6 +68,23 @@ new class extends Component {
     </div>
 
     @if ($task->countdown)
+        <div
+            wire:ignore
+            x-data="{
+                init() {
+                    flatpickr(this.$refs.input, {
+                        dateFormat: 'Y-m-d',
+                        allowInput: true,
+                        defaultDate: @js($original_due_date),
+                        onChange: (_dates, str) => $wire.set('original_due_date', str),
+                        onClose: (_dates, str) => $wire.set('original_due_date', str),
+                    });
+                },
+            }"
+        >
+            <flux:input label="Base date" placeholder="YYYY-MM-DD" x-ref="input" />
+        </div>
+
         <flux:select label="Icon" wire:model="icon" placeholder="Choose an icon…">
             @foreach (Task::icons() as $iconName)
                 <flux:select.option value="{{ $iconName }}">{{ $iconName }}</flux:select.option>

@@ -13,6 +13,7 @@ return [
     |
     */
     'bottom' => true,
+    'upper' => [true],
 
     'name' => env('APP_NAME', 'Laravel'),
 
