@@ -54,12 +54,18 @@ new class extends Component {
         wire:ignore
         x-data="{
             init() {
-                flatpickr(this.$refs.input, {
+                const fp = flatpickr(this.$refs.input, {
                     dateFormat: 'Y-m-d',
                     allowInput: true,
                     defaultDate: @js($due_date),
                     onChange: (_dates, str) => $wire.set('due_date', str),
                     onClose: (_dates, str) => $wire.set('due_date', str),
+                });
+                this.$refs.input.addEventListener('blur', () => {
+                    if (this.$refs.input.value.trim() === '') {
+                        fp.clear();
+                        $wire.set('due_date', null);
+                    }
                 });
             },
         }"
@@ -72,12 +78,18 @@ new class extends Component {
             wire:ignore
             x-data="{
                 init() {
-                    flatpickr(this.$refs.input, {
+                    const fp = flatpickr(this.$refs.input, {
                         dateFormat: 'Y-m-d',
                         allowInput: true,
                         defaultDate: @js($original_due_date),
                         onChange: (_dates, str) => $wire.set('original_due_date', str),
                         onClose: (_dates, str) => $wire.set('original_due_date', str),
+                    });
+                    this.$refs.input.addEventListener('blur', () => {
+                        if (this.$refs.input.value.trim() === '') {
+                            fp.clear();
+                            $wire.set('original_due_date', null);
+                        }
                     });
                 },
             }"
